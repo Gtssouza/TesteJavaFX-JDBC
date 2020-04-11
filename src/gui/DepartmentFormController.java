@@ -73,7 +73,13 @@ public class DepartmentFormController implements Initializable {
 		notifyDataChangeListeners();
 		Utils.currentStage(event).close();
 		
-		}catch(DbException e) {
+		}
+		
+		catch(ValidationException e) {
+			setErrorMessages(e.getErrors());
+		}
+		
+		catch(DbException e) {
 			Alerts.showAlert("Erro salvando objeto", null, e.getMessage(), AlertType.ERROR);
 		}
 	}
@@ -130,6 +136,10 @@ public class DepartmentFormController implements Initializable {
 	
 	private void setErrorMessages(Map<String, String> errors) {
 		Set<String> fields = errors.keySet();
+		
+		if(fields.contains("name")) {
+			labelErrorName.setText(errors.get("name"));
+		}
 	}
 	
 
